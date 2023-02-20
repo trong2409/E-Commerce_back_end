@@ -1,83 +1,79 @@
-const mongoose = require("mongoose");
-const brcypt = require("bcrypt");
+const mongoose = require("mongoose"); // Erase if already required
+const bcrypt = require("bcrypt");
 const crypto = require("crypto");
-const { reset } = require("nodemon");
-
-const userSchema = new mongoose.Schema(
+// Declare the Schema of the Mongo model
+var userSchema = new mongoose.Schema(
   {
     firstname: {
       type: String,
-      require: true,
+      required: true,
     },
     lastname: {
       type: String,
-      require: true,
+      required: true,
     },
     email: {
       type: String,
-      require: true,
+      required: true,
       unique: true,
     },
     mobile: {
       type: String,
-      require: true,
+      required: true,
       unique: true,
     },
     password: {
       type: String,
-      require: true,
+      required: true,
     },
     role: {
       type: String,
-      require: true,
       default: "user",
-    },
-    cart: {
-      type: Array,
-      default: [],
     },
     isBlocked: {
       type: Boolean,
       default: false,
     },
-    address: [{ type: mongoose.Schema.Types.ObjectId, ref: "Address" }],
+    cart: {
+      type: Array,
+      default: [],
+    },
+    address: {
+      type: String,
+    },
     wishlist: [{ type: mongoose.Schema.Types.ObjectId, ref: "Product" }],
     refreshToken: {
       type: String,
     },
-    passwordChangedAt: {
-      type: Date,
-    },
-    passwordResetToken: {
-      type: String,
-    },
-    passwordResetExpire: {
-      type: Date,
-    },
+    passwordChangedAt: Date,
+    passwordResetToken: String,
+    passwordResetExpires: Date,
   },
-  { timeseries: true }
+  {
+    timestamps: true,
+  }
 );
 
-// Hashing password before store to DB
 userSchema.pre("save", async function (next) {
   if (!this.isModified("password")) {
     next();
   }
-  const salt = await brcypt.genSaltSync(10);
-  this.password = await brcypt.hash(this.password, salt);
+  const salt = await bcrypt.genSaltSync(10);
+  this.password = await bcrypt.hash(this.password, salt);
+  next();
 });
-
-userSchema.methods.isPasswordMatched = async function (EnteredPassword) {
-  return await brcypt.compare(EnteredPassword, this.password);
+userSchema.methods.isPasswordMatched = async function (enteredPassword) {
+  return await bcrypt.compare(enteredPassword, this.password);
 };
-
-userSchema.methods.CreatePasswordResetToken = async function () {
-  const resetToken = crypto.randomBytes(32).toString("hex");
+userSchema.methods.createPasswordResetToken = async function () {
+  const resettoken = crypto.randomBytes(32).toString("hex");
   this.passwordResetToken = crypto
     .createHash("sha256")
-    .update(resetToken)
+    .update(resettoken)
     .digest("hex");
-  this.passwordChangedAt = Date.now() + 30 * 60 * 1000;
-  return resetToken;
+  this.passwordResetExpires = Date.now() + 30 * 60 * 1000; // 10 minutes
+  return resettoken;
 };
+
+//Export the model
 module.exports = mongoose.model("User", userSchema);
