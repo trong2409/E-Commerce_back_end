@@ -2,7 +2,7 @@ const User = require("../models/userModel.js");
 const jwt = require("jsonwebtoken");
 const asyncHandler = require("express-async-handler");
 
-const authMiddleware = asyncHandler(async (req, res, next) => {
+const authMiddleWare = asyncHandler(async (req, res, next) => {
   let token = req.headers.authorization || null;
   if (token) {
     try {
@@ -23,4 +23,4 @@ const isAdmin = asyncHandler(async (req, res, next) => {
   else throw new Error("No permission");
 });
 
-module.exports = { authMiddleware, isAdmin };
+module.exports = { authMiddleWare, isAdmin };

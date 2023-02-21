@@ -8,17 +8,17 @@ const {
   addToWishlist,
   rating,
 } = require("../controller/productCtrl");
-const { isAdmin, authMiddleware } = require("../middlewares/authMiddleware");
+const { isAdmin, authMiddleWare } = require("../middlewares/authMiddleWare");
 const router = express.Router();
 
-router.post("/", authMiddleware, isAdmin, createProduct);
+router.post("/", authMiddleWare, isAdmin, createProduct);
 
 router.get("/:id", getaProduct);
-router.put("/wishlist", authMiddleware, addToWishlist);
-router.put("/rating", authMiddleware, rating);
+router.put("/wishlist", authMiddleWare, addToWishlist);
+router.put("/rating", authMiddleWare, rating);
 
-router.put("/:id", authMiddleware, isAdmin, updateProduct);
-router.delete("/:id", authMiddleware, isAdmin, deleteProduct);
+router.put("/:id", authMiddleWare, isAdmin, updateProduct);
+router.delete("/:id", authMiddleWare, isAdmin, deleteProduct);
 
 router.get("/", getAllProduct);
 

@@ -5,13 +5,13 @@ const {
   updateCoupon,
   deleteCoupon,
 } = require("../controller/couponCtrl");
-const { authMiddleware, isAdmin } = require("../middlewares/authMiddleware");
+const { authMiddleWare, isAdmin } = require("../middlewares/authMiddleWare");
 const router = express.Router();
 
-router.post("/", authMiddleware, isAdmin, createCoupon);
-router.get("/", authMiddleware, isAdmin, getAllCoupons);
-router.get("/:id", authMiddleware, isAdmin, getAllCoupons);
-router.put("/:id", authMiddleware, isAdmin, updateCoupon);
-router.delete("/:id", authMiddleware, isAdmin, deleteCoupon);
+router.post("/", authMiddleWare, isAdmin, createCoupon);
+router.get("/", authMiddleWare, isAdmin, getAllCoupons);
+router.get("/:id", authMiddleWare, isAdmin, getAllCoupons);
+router.put("/:id", authMiddleWare, isAdmin, updateCoupon);
+router.delete("/:id", authMiddleWare, isAdmin, deleteCoupon);
 
 module.exports = router;

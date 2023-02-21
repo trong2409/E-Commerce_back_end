@@ -6,12 +6,12 @@ const {
   getBrand,
   getallBrand,
 } = require("../controller/brandCtrl");
-const { authMiddleware, isAdmin } = require("../middlewares/authMiddleware");
+const { authMiddleWare, isAdmin } = require("../middlewares/authMiddleWare");
 const router = express.Router();
 
-router.post("/", authMiddleware, isAdmin, createBrand);
-router.put("/:id", authMiddleware, isAdmin, updateBrand);
-router.delete("/:id", authMiddleware, isAdmin, deleteBrand);
+router.post("/", authMiddleWare, isAdmin, createBrand);
+router.put("/:id", authMiddleWare, isAdmin, updateBrand);
+router.delete("/:id", authMiddleWare, isAdmin, deleteBrand);
 router.get("/:id", getBrand);
 router.get("/", getallBrand);
 

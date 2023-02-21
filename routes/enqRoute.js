@@ -6,12 +6,12 @@ const {
   getEnquiry,
   getallEnquiry,
 } = require("../controller/enqCtrl");
-const { authMiddleware, isAdmin } = require("../middlewares/authMiddleware");
+const { authMiddleWare, isAdmin } = require("../middlewares/authMiddleWare");
 const router = express.Router();
 
 router.post("/", createEnquiry);
-router.put("/:id", authMiddleware, isAdmin, updateEnquiry);
-router.delete("/:id", authMiddleware, isAdmin, deleteEnquiry);
+router.put("/:id", authMiddleWare, isAdmin, updateEnquiry);
+router.delete("/:id", authMiddleWare, isAdmin, deleteEnquiry);
 router.get("/:id", getEnquiry);
 router.get("/", getallEnquiry);
 
